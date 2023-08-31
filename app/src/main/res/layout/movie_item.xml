@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="16dp"> <!-- Tạo khoảng cách xung quanh CardView -->
+
+    <LinearLayout
+        android:layout_width="170dp"
+        android:layout_height="280dp"
+        android:orientation="vertical">
+
+        <ImageView
+            android:id="@+id/image"
+            android:layout_width="170dp"
+            android:layout_height="200dp"
+            android:src="@drawable/shooting_stars"
+            android:scaleType="centerCrop" /> <!-- Để ảnh hiển thị đẹp hơn -->
+
+        <TextView
+            android:id="@+id/name"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="Shooting Stars (2022)"
+            android:layout_gravity="center"
+            android:textSize="16sp"
+            android:textStyle="bold"
+            android:paddingTop="8dp" /> <!-- Tạo khoảng cách trên cho TextView -->
+
+        <TextView
+            android:id="@+id/price"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text="$120"
+            android:layout_gravity="bottom|end"
+            android:textColor="#FF0000"
+            android:textSize="14sp"
+            android:layout_marginEnd="10dp"
+            android:layout_marginBottom="10dp"/> <!-- Tạo khoảng cách trên cho TextView -->
+
+    </LinearLayout>
+
+</androidx.cardview.widget.CardView>
