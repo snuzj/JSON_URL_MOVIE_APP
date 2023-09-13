@@ -1,16 +1,14 @@
 package com.snuzj.bai5;
 
-import androidx.appcompat.app.AppCompatActivity;
-import androidx.recyclerview.widget.GridLayoutManager;
-import androidx.recyclerview.widget.RecyclerView;
-
 import android.os.AsyncTask;
 import android.os.Bundle;
-
+import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.Fragment;
+import androidx.fragment.app.FragmentTransaction;
+import com.snuzj.bai5.databinding.ActivityMainBinding;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
-
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
@@ -22,98 +20,47 @@ import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
-
-    private static String JSON_URL = "https://run.mocky.io/v3/90b972eb-d8e0-48c4-910d-b28cf36d64af";
-
-    List<MovieModelClass> movieList;
-    RecyclerView recyclerView;
+    private ActivityMainBinding binding;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_main);
+        binding = ActivityMainBinding.inflate(getLayoutInflater());
+        setContentView(binding.getRoot());
 
-        movieList = new ArrayList<>();
-        recyclerView = findViewById(R.id.recyclerView);
-
-        GetData getdata = new GetData();
-        getdata.execute();
-    }
-
-    public class GetData extends AsyncTask<String, String, String> {
-
-        @Override
-        protected String doInBackground(String... strings) {
-            String current = "";
-            try {
-                URL url;
-                HttpURLConnection urlConnection = null;
-
-                try {
-                    url = new URL(JSON_URL);
-                    urlConnection = (HttpURLConnection) url.openConnection();
-
-                    InputStream inputStream = urlConnection.getInputStream();
-                    InputStreamReader isr = new InputStreamReader(inputStream);
-
-                    int data = isr.read();
-                    while (data != -1) {
-                        current += (char) data;
-                        data = isr.read();
-                    }
-
-
-                } catch (MalformedURLException e) {
-                    throw new RuntimeException(e);
-                } catch (IOException e) {
-                    throw new RuntimeException(e);
-                } finally {
-                    if (urlConnection != null) {
-                        urlConnection.disconnect();
-                    }
-                }
-
-
-            } catch (RuntimeException e) {
-                throw new RuntimeException(e);
+        // Xử lý sự kiện khi mục trên BottomNavigationView được chọn
+        binding.bottomNavigation.setOnNavigationItemSelectedListener(item -> {
+            Fragment fragment = null;
+            if (item.getItemId() == R.id.menu_home) {
+                fragment = new HomeFragment();
+            } else if (item.getItemId() == R.id.menu_favorite) {
+                fragment = new FavoriteFragment();
+            } else if (item.getItemId() == R.id.menu_cart) {
+                fragment = new CartFragment();
+            } else if (item.getItemId() == R.id.menu_account) {
+                fragment = new AccountFragment();
             }
 
-
-            return current;
-        }
-
-        @Override
-        protected void onPostExecute(String s) {
-
-            try{
-                JSONObject jsonObject = new JSONObject(s);
-                JSONArray jsonArray = jsonObject.getJSONArray("movies");
-
-                for (int i = 0; i < jsonArray.length(); i++){
-                    JSONObject jsonObject1 = jsonArray.getJSONObject(i);
-
-                    MovieModelClass model = new MovieModelClass();
-                    model.setImg(jsonObject1.getString("image"));
-                    model.setName(jsonObject1.getString("name"));
-                    model.setPrice(jsonObject1.getString("price"));
-
-                    movieList.add(model);
-
-
-                }
-
-
-            } catch (JSONException e) {
-                throw new RuntimeException(e);
+            if (fragment != null) {
+                loadFragment(fragment);
+                return true;
             }
 
-            PutDataIntoRecyclerView(movieList);
-        }
+            return false;
+        });
+
+
+
+
+        // Hiển thị mặc định HomeFragment khi ứng dụng khởi động
+        loadFragment(new HomeFragment());
     }
 
-    private void PutDataIntoRecyclerView(List<MovieModelClass> movieList) {
-        Adaptery adaptery = new Adaptery(this, movieList);
-        recyclerView.setAdapter(adaptery);
+    private void loadFragment(Fragment fragment) {
+        getSupportFragmentManager()
+                .beginTransaction()
+                .replace(binding.fragmentContainer.getId(), fragment)
+                .addToBackStack(null)
+                .commit();
     }
 }
-

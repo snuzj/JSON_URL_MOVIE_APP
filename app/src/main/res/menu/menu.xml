@@ -1,0 +1,19 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android">
+    <item
+        android:id="@+id/menu_home"
+        android:title="Trang chủ"
+        android:icon="@drawable/ic_home" /> <!-- Thay đổi @drawable/ic_home thành tên biểu tượng của trang chủ -->
+    <item
+        android:id="@+id/menu_favorite"
+        android:title="Yêu thích"
+        android:icon="@drawable/ic_favorite" /> <!-- Thay đổi @drawable/ic_favorite thành tên biểu tượng của yêu thích -->
+    <item
+        android:id="@+id/menu_cart"
+        android:title="Giỏ hàng"
+        android:icon="@drawable/ic_cart" /> <!-- Thay đổi @drawable/ic_cart thành tên biểu tượng của Cart -->
+    <item
+        android:id="@+id/menu_account"
+        android:title="Tài khoản"
+        android:icon="@drawable/ic_person" /> <!-- Thay đổi @drawable/ic_account thành tên biểu tượng của Account -->
+</menu>
